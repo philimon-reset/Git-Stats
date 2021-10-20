@@ -41,7 +41,7 @@ def callback():
         usr = storage.all(cls=User)[user_id]
         usr.update(**user_info)
         usr.save()
-    else:''
+    else:
         new_user = User(**user_info)
         new_user.save()
     return "success"
