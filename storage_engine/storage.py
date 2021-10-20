@@ -3,7 +3,7 @@
 module containing FileStorage used for file storage
 """
 import json
-import models
+from models import User
 
 
 class FileStorage:
