@@ -1,3 +1,3 @@
-import storage
+from . import storage
 
 Storage_Json = storage.FileStorage()
