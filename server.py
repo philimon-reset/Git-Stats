@@ -6,8 +6,8 @@ from wrapper.user_wrapper import get_user
 from storage_engine import Storage_Json
 from models import UserModel
 
-CLIENT_ID = getenv('client_id')
-CLIENT_SECRET = getenv('client_secret')
+CLIENT_ID = getenv('GH_BASIC_CLIENT_ID')
+CLIENT_SECRET = getenv('GH_BASIC_SECRET_ID')
 
 app = Flask(__name__)
 
