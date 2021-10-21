@@ -36,14 +36,17 @@ def callback():
 
     access_token = git_response.json().get("access_token")
 
-    user_info = get_user(access_token, None).json()
+    user_request = get_user(access_token, None)
+    user_info = user_request.json()
     user_id = user_info.get("id")
 
-    if (user_id in Storage_Json.all(cls=UserModel.User)):
-        usr = Storage_Json.all(cls=UserModel.User)[user_id]
+    if (user_id in Storage_Json.all(UserModel.User)):
+        usr = Storage_Json.all(UserModel.User)[user_id]
+        user_info["etag"] = user_request.headers.get("etag")
         usr.update(**user_info)
         usr.save()
     else:
+        user_info["etag"] = user_request.headers.get("etag")
         new_user = UserModel.User(**user_info)
         new_user.save()
     return "success"
