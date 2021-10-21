@@ -3,8 +3,10 @@
 module containing FileStorage used for file storage
 """
 import json
-import models
+import models.UserModel as UserModel
+import models.RepoModel as RepoModel
 
+dummy_classes = {"User": UserModel.User, "Repo": RepoModel.Repo}
 
 class FileStorage:
     """
@@ -23,9 +25,9 @@ class FileStorage:
         """returns a dictionary containing every object"""
         if (cls == None):
             return {"users": self.__users, "repos": self.__repos}
-        if (cls == User):
+        if (cls == dummy_classes["User"]):
             return self.__users
-        if (cls == Repo):
+        if (cls == dummy_classes["Repo"]):
             return self.__repos
 
     def new_user(self, user):
@@ -71,7 +73,7 @@ class FileStorage:
             with open(self.__file_user, "r") as user_file:
                 user_T = json.load(user_file)
             for id, user_obj in user_T.items():
-                self.__users[id] = User(**user_obj)
+                self.__users[id] = dummy_classes["User"](**user_obj)
         except:
             pass
         try:
@@ -80,7 +82,7 @@ class FileStorage:
             for id, repos in repo_T.items:
                 temp_repos = []
                 for repo in repos:
-                    temp_repos.append(Repo(**repo))
+                    temp_repos.append(dummy_classes["Repo"](**repo))
                 self.__repos[id] = temp_repos
         except:
             pass
