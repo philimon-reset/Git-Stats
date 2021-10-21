@@ -1,5 +1,4 @@
-from storage_engine import  Storage_Json
-
+import storage_engine
 
 """ User object """
 class User():
@@ -17,7 +16,7 @@ class User():
         self.followers = ""
         self.following = ""
         if kwargs:
-            for attr, val in kwargs:
+            for attr, val in kwargs.items():
                 if hasattr(self, attr):
                     setattr(self, attr, val)
 
@@ -30,5 +29,11 @@ class User():
     def save(self):
         """ save user attributes in the storage
         """
-        Storage_Json.new_user(self)
-        Storage_Json.save_user()
+        storage_engine.Storage_Json.new_user(self)
+        storage_engine.Storage_Json.save_user()
+
+    def to_dict(self):
+        """returns a dictionary containing all keys/values of the instance"""
+        new_dict = self.__dict__.copy()
+        new_dict["__class__"] = self.__class__.__name__
+        return new_dict

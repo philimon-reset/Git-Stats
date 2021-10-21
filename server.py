@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request
 from requests import post
 from os import getenv
-from storage_engine import storage_json
+
+from wrapper.user_wrapper import get_user
+from storage_engine import Storage_Json
+from models import UserModel
 
 CLIENT_ID = getenv('GH_BASIC_CLIENT_ID')
 CLIENT_SECRET = getenv('GH_BASIC_SECRET_ID')
@@ -34,15 +37,14 @@ def callback():
     access_token = git_response.json().get("access_token")
 
     user_info = get_user(access_token, None).json()
-    trim(user_info)
     user_id = user_info.get("id")
 
-    if (user_id in storage.all(cls=User)):
-        usr = storage.all(cls=User)[user_id]
+    if (user_id in Storage_Json.all(cls=UserModel.User)):
+        usr = Storage_Json.all(cls=UserModel.User)[user_id]
         usr.update(**user_info)
         usr.save()
-    else:''
-        new_user = User(**user_info)
+    else:
+        new_user = UserModel.User(**user_info)
         new_user.save()
     return "success"
     # return render_template("landing.html")
