@@ -15,14 +15,15 @@ class User():
         self.public_repos = ""
         self.followers = ""
         self.following = ""
+        self.etag = ""
         if kwargs:
             for attr, val in kwargs.items():
                 if hasattr(self, attr):
                     setattr(self, attr, val)
 
-    def update(self, **kwargs):
+    def update(self, *args, **kwargs):
         """ update user attributes """
-        for attr, val in kwargs:
+        for attr, val in kwargs.items():
             if hasattr(self, attr):
                 setattr(self, attr, val)
 
