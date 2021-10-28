@@ -43,6 +43,7 @@ def callback():
 
     if (user_id not in Storage_Json.all(UserModel.User)):
         user_info["user_etag"] = user_request.headers.get("etag")
+        user_info["access_token"] = access_token
 
         repo_request = get_user_repos(access_token, headers=header)
         user_info["repo_etag"] = repo_request["etag"]
@@ -55,6 +56,19 @@ def callback():
 
     return "success"
     # return render_template("landing.html")
+
+@app.route("/gitstat/<int:user_id>")
+def get_template(user_id):
+    user = Storage_Json.get_user(user_id).to_dict()
+    user_repos = [repo.to_dict() for repo in Storage_Json.get_user_repos(user_id)]
+    # test_update = get_user(user["access_token"], user["user_etag"])
+    # if (test_update):
+    #     updated_user_info = test_update.json()
+    #     updated_user_info["user_etag"] = test_update.header.get("etag")
+    #     user.update(**updated_user_info)
+    #     user.save()
+    # user = Storage_Json.get_user(user_id).to_dict()
+    return render_template("user_template", user_info=user, user_repo_info=user_repos)
 
 if __name__ == "__main__":
     app.run()

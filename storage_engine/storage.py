@@ -98,3 +98,9 @@ class FileStorage:
         """
         del self.__users[user.id]
         del self.__repos[user.id]
+
+    def get_user(self, id):
+        return self.__users.get(id)
+
+    def get_user_repos(self, id):
+        return self.__repos.get(id)

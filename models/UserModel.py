@@ -3,6 +3,7 @@ import storage_engine
 """ User object """
 class User():
     def __init__(self, *args, **kwargs):
+        self.access_token = ""
         self.id = 0
         self.login = ""
         self.name = ""
@@ -44,5 +45,5 @@ class User():
     def to_dict(self):
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
-        new_dict["__class__"] = self.__class__.__name__
+        # new_dict["__class__"] = self.__class__.__name__
         return new_dict
