@@ -13,6 +13,7 @@ def get_user_repos(token, headers={}, etag=None):
     params = {
         "sort": "pushed",
         "per_page": 100,
+        "visibility": "public"
     }
     repos_info = {"etag": etag, "repos": []}
     result = get("https://api.github.com/user/repos", headers=headers, params=params)
@@ -20,6 +21,8 @@ def get_user_repos(token, headers={}, etag=None):
         return repos_info
     else:
         for repo in result.json():
+            repo["owner_id"] = repo["owner"]["id"]
+            repo["repo_owner_name"] = repo["owner"]["login"]
             repos_info["repos"].append(repo)
         repos_info["etag"] = result.headers.get("etag")
     return repos_info
