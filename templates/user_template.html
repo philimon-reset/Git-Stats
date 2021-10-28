@@ -26,9 +26,9 @@
                   </div>
                </div>
                <div class="toe">
-                  <span class="common watcher_count">{{ repo.subscribers_count }}</span>
-                  <span class="common star_count">{{ repo.stargazers_count }}</span>
-                  <span class="common forks_count">{{ repo.forks_count }}</span>
+                  <span class="common watcher_count">watchers: {{ repo.subscribers_count }}</span>
+                  <span class="common star_count">Stars: {{ repo.stargazers_count }}</span>
+                  <span class="common forks_count">Forks: {{ repo.forks_count }}</span>
                   {% if repo.license is defined %}
                      <span class="license_main">{{ repo.license.name }}</span>
                   {% endif %}

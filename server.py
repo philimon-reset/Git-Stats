@@ -41,7 +41,7 @@ def callback():
     user_info = user_request.json()
     user_id = user_info.get("id")
 
-    if (not Storage_Json.get_user(user_id)):
+    if (not Storage_Json.get_stored_user(user_id)):
         user_info["user_etag"] = user_request.headers.get("etag")
         user_info["access_token"] = access_token
 
@@ -57,10 +57,10 @@ def callback():
     return "success"
     # return render_template("landing.html")
 
-@app.route("/gitstat/<int:user_id>")
+@app.route("/gitstat/<string:user_id>")
 def get_template(user_id):
-    user = Storage_Json.get_user(user_id).to_dict()
-    user_repos = [repo.to_dict() for repo in Storage_Json.get_user_repos(user_id)]
+    user = Storage_Json.get_stored_user(user_id).to_dict()
+    user_repos = [repo.to_dict() for repo in Storage_Json.get_stored_user_repos(str(user_id))]
     # test_update = get_user(user["access_token"], user["user_etag"])
     # if (test_update):
     #     updated_user_info = test_update.json()

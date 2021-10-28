@@ -10,21 +10,26 @@ body {
   justify-content: center;
   height: 100vh;
   font-family: "Fira Sans", sans-serif;
-  background: linear-gradient(147deg, #f1cd80 0%, #d65345 74%);
+  background: #d65345
 }
 .main-content {
-  background: white;
-  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   min-width: 600px;
   min-height: 350px;
   margin: auto;
   padding: 2%;
 }
 .repo-content {
+  background: white;
+  border-radius: 20px;
+  margin: 10px;
   height: 50%;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  padding: 10px;
 }
 
 .head,
