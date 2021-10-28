@@ -10,7 +10,7 @@
          {% for repo in user_repo_info %}
             <div class="repo-content">
                <div class="head">
-                  <span class="repo-owner">{{ repo.repo_owner_name }}</span>
+                  <span class="repo-owner"><a href= {{ repo.repo_owner_url }}>@{{ repo.repo_owner_name }}</a></span>
                   {% if repo.topics is defined %}
                      {% for topic in repo.topics %}
                         <span class="tag">{{ topic }}</span>
@@ -19,7 +19,7 @@
                </div>
                <div class="main_boi">
                   <div class="repo-name">
-                     {{ repo.name }}
+                     <a href= {{ repo.html_url }}> <h2>{{ repo.name }}</h2></a>
                   </div>
                   <div class="descrption">
                      {{ repo.description }}
@@ -34,7 +34,7 @@
                   {% endif %}
                   <div class="user_info">
                      <img src={{ user_info.avatar_url }} alt="avatar">
-                     <span class="username">DORO-100</span>
+                     <span class="username"><a href={{ user_info.html_url }}>@{{ user_info.login }}</a></span>
                   </div>
                </div>
             </div>

@@ -8,6 +8,7 @@ class Repo():
         self.name = ""
         self.owner_id = 0
         self.repo_owner_name = ""
+        self.repo_owner_url = ""
         self.forks_count = 0
         self.stargazers_count = 0
         self.subscribers_count = 0
@@ -17,6 +18,7 @@ class Repo():
         self.topics = []
         self.size = 0
         self.langs = {}
+        self.html_url = ""
         if kwargs:
             for attr, val in kwargs.items():
                 if hasattr(self, attr):

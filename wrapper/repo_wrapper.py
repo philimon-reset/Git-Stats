@@ -23,6 +23,7 @@ def get_user_repos(token, headers={}, etag=None):
         for repo in result.json():
             repo["owner_id"] = repo["owner"]["id"]
             repo["repo_owner_name"] = repo["owner"]["login"]
+            repo["repo_owner_url"] = repo["owner"]["html_url"]
             repos_info["repos"].append(repo)
         repos_info["etag"] = result.headers.get("etag")
     return repos_info
