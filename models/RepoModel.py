@@ -7,6 +7,7 @@ class Repo():
         self.id = 0
         self.name = ""
         self.owner_id = 0
+        self.repo_owner_name = ""
         self.forks_count = 0
         self.stargazers_count = 0
         self.subscribers_count = 0
