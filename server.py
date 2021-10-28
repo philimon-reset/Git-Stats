@@ -41,7 +41,7 @@ def callback():
     user_info = user_request.json()
     user_id = user_info.get("id")
 
-    if (user_id not in Storage_Json.all(UserModel.User)):
+    if (not Storage_Json.get_user(user_id)):
         user_info["user_etag"] = user_request.headers.get("etag")
         user_info["access_token"] = access_token
 
@@ -68,7 +68,7 @@ def get_template(user_id):
     #     user.update(**updated_user_info)
     #     user.save()
     # user = Storage_Json.get_user(user_id).to_dict()
-    return render_template("user_template", user_info=user, user_repo_info=user_repos)
+    return render_template('user_template.html', user_info=user, user_repo_info=user_repos)
 
 if __name__ == "__main__":
     app.run()

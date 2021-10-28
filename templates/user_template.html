@@ -3,39 +3,9 @@
 <html lang="en" dir="ltr">
    <head>
       <meta charset="utf-8">
-      <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="../static/style.css">
    </head>
    <body>
-      <!-- <div class="main-content">
-         {% for repo in user_repo_info %}
-            <div class="repo-content">
-               <div class="head">
-                  <span class="repo-owner">{{ repo.repo_owner_name }}</span>
-                  {% if repo.topics is defined %}
-                     {% for topic in repo.topics %}
-                        <span class="tag">{{ topic }}</span>
-                     {% endfor %}
-                  {% endif %}
-               </div>
-               <div class="main_boi">
-                  <div class="repo-name">
-                     {{ repo.name }}
-                  </div>
-                  <div class="descrption">
-                     {{ repo.description }}
-                  </div>
-               </div>
-               <div class="toe">
-                  <span class="watcher_count">{{ repo.subscribers_count }}</span>
-                  <span class="star_count">{{ repo.stargazers_count }}</span>
-                  <span class="forks_count">{{ repo.forks_count }}</span>
-                  {% if repo.license is defined %}
-                     <span class="license_main">{{ repo.license.name }}</span>
-                  {% endif %}
-               </div>
-            </div>
-         {% endfor %}
-      </div> -->
       <div class="main-content">
          {% for repo in user_repo_info %}
             <div class="repo-content">
@@ -63,7 +33,7 @@
                      <span class="license_main">{{ repo.license.name }}</span>
                   {% endif %}
                   <div class="user_info">
-                     <img src="../jojo-giorno-1281854.jpeg" alt="JOJO NOOOO">
+                     <img src={{ user_info.avatar_url }} alt="avatar">
                      <span class="username">DORO-100</span>
                   </div>
                </div>
