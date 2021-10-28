@@ -61,7 +61,7 @@ class FileStorage:
             temp_list = []
             for repo in obj:
                 temp_list.append(repo.to_dict())
-            temp[id] = temp
+            temp[id] = temp_list
 
         with open(self.__file_repo, "w") as json_file:
             json.dump(temp, json_file)

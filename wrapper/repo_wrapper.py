@@ -15,7 +15,7 @@ def get_user_repos(token, headers={}, etag=None):
         "per_page": 100,
     }
     repos_info = {"etag": etag, "repos": []}
-    result = get("https://api.github.com/users/repos", headers=headers, params=params)
+    result = get("https://api.github.com/user/repos", headers=headers, params=params)
     if result.status_code == 304:
         return repos_info
     else:
