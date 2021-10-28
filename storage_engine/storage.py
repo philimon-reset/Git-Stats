@@ -37,6 +37,7 @@ class FileStorage:
         self.__users[user.id] = user
 
     def new_repo(self, repo, user):
+        """ add an instance to the repo dictionary """
         if not (self.__repos.get(user.id)):
             self.__repos[user.id] = []
         self.__repos[user.id].append(repo)

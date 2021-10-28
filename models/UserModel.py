@@ -15,7 +15,8 @@ class User():
         self.public_repos = ""
         self.followers = ""
         self.following = ""
-        self.etag = ""
+        self.user_etag = ""
+        self.repo_etag = ""
         if kwargs:
             for attr, val in kwargs.items():
                 if hasattr(self, attr):
@@ -32,6 +33,13 @@ class User():
         """
         storage_engine.Storage_Json.new_user(self)
         storage_engine.Storage_Json.save_user()
+    def save_repos(self, repos=[]):
+        """ ***U
+        """
+        for x in repos:
+            storage_engine.Storage_Json.new_repo(x, self)
+        storage_engine.Storage_Json.save_repos()
+
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of the instance"""
