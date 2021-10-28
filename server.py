@@ -54,8 +54,8 @@ def callback():
 
         new_user.save_repos(repo_objs)
 
-    return "success"
-    # return render_template("landing.html")
+    # return "success"
+    return render_template("landing.html", user=user_info)
 
 @app.route("/gitstat/<string:user_id>")
 def get_template(user_id):
