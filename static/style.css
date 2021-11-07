@@ -10,7 +10,7 @@ body {
   justify-content: center;
   height: 100vh;
   font-family: "Fira Sans", sans-serif;
-  background: rgb(49, 49, 49);
+  background: #d65345
 }
 .main-content {
   display: flex;
@@ -22,11 +22,7 @@ body {
   padding: 2%;
 }
 .repo-content {
-  background-image: linear-gradient(
-    to right,
-    rgb(255 255 255),
-    rgb(53 119 188)
-  );
+  background: white;
   border-radius: 20px;
   margin: 10px;
   height: 50%;
