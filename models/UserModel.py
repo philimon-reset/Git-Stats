@@ -3,6 +3,7 @@ import storage_engine
 """ User object """
 class User():
     def __init__(self, *args, **kwargs):
+        self.access_token = ""
         self.id = 0
         self.login = ""
         self.name = ""
@@ -15,7 +16,8 @@ class User():
         self.public_repos = ""
         self.followers = ""
         self.following = ""
-        self.etag = ""
+        self.user_etag = ""
+        self.repo_etag = ""
         if kwargs:
             for attr, val in kwargs.items():
                 if hasattr(self, attr):
@@ -32,9 +34,16 @@ class User():
         """
         storage_engine.Storage_Json.new_user(self)
         storage_engine.Storage_Json.save_user()
+    def save_repos(self, repos=[]):
+        """ ***U
+        """
+        for x in repos:
+            storage_engine.Storage_Json.new_repo(x, self)
+        storage_engine.Storage_Json.save_repos()
+
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
-        new_dict["__class__"] = self.__class__.__name__
+        # new_dict["__class__"] = self.__class__.__name__
         return new_dict

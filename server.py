@@ -3,8 +3,9 @@ from requests import post
 from os import getenv
 
 from wrapper.user_wrapper import get_user
+from wrapper.repo_wrapper import get_user_repos
 from storage_engine import Storage_Json
-from models import UserModel
+from models import UserModel, RepoModel
 
 CLIENT_ID = getenv('GH_BASIC_CLIENT_ID')
 CLIENT_SECRET = getenv('GH_BASIC_SECRET_ID')
@@ -36,21 +37,38 @@ def callback():
 
     access_token = git_response.json().get("access_token")
 
-    user_request = get_user(access_token, None)
+    user_request = get_user(access_token, headers=header)
     user_info = user_request.json()
     user_id = user_info.get("id")
 
-    if (user_id in Storage_Json.all(UserModel.User)):
-        usr = Storage_Json.all(UserModel.User)[user_id]
-        user_info["etag"] = user_request.headers.get("etag")
-        usr.update(**user_info)
-        usr.save()
-    else:
-        user_info["etag"] = user_request.headers.get("etag")
+    if (not Storage_Json.get_stored_user(str(user_id))):
+        user_info["user_etag"] = user_request.headers.get("etag")
+        user_info["access_token"] = access_token
+
+        repo_request = get_user_repos(access_token, headers=header)
+        user_info["repo_etag"] = repo_request["etag"]
+        repo_objs = [RepoModel.Repo(**repo) for repo in repo_request["repos"]]
+        
         new_user = UserModel.User(**user_info)
         new_user.save()
-    return "success"
-    # return render_template("landing.html")
+
+        new_user.save_repos(repo_objs)
+
+    # return "success"
+    return render_template("landing.html", user=user_info)
+
+@app.route("/gitstat/<string:user_id>")
+def get_template(user_id):
+    user = Storage_Json.get_stored_user(str(user_id)).to_dict()
+    user_repos = [repo.to_dict() for repo in Storage_Json.get_stored_user_repos(str(user_id))]
+    # test_update = get_user(user["access_token"], user["user_etag"])
+    # if (test_update):
+    #     updated_user_info = test_update.json()
+    #     updated_user_info["user_etag"] = test_update.header.get("etag")
+    #     user.update(**updated_user_info)
+    #     user.save()
+    # user = Storage_Json.get_user(user_id).to_dict()
+    return render_template('user_template.html', user_info=user, user_repo_info=user_repos)
 
 if __name__ == "__main__":
     app.run()

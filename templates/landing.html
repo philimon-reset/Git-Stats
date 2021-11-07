@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Landing</title>
+        <link rel="stylesheet" href="../static/landing_style.css">
+</head>
+<body>
+        <div class="container">
+                <h1>Hey {{ user.name }} 👋</h1>
+                <h2>Please click <a href="{{ "http://localhost:5000/gitstat/%s" % user.id  }}">here</a> to view your Git Stats!</h2>
+        </div>
+</body>
+</html>

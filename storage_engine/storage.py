@@ -3,6 +3,8 @@
 module containing FileStorage used for file storage
 """
 import json
+
+from requests.sessions import extract_cookies_to_jar
 import models.UserModel as UserModel
 import models.RepoModel as RepoModel
 
@@ -37,6 +39,7 @@ class FileStorage:
         self.__users[user.id] = user
 
     def new_repo(self, repo, user):
+        """ add an instance to the repo dictionary """
         if not (self.__repos.get(user.id)):
             self.__repos[user.id] = []
         self.__repos[user.id].append(repo)
@@ -60,7 +63,7 @@ class FileStorage:
             temp_list = []
             for repo in obj:
                 temp_list.append(repo.to_dict())
-            temp[id] = temp
+            temp[id] = temp_list
 
         with open(self.__file_repo, "w") as json_file:
             json.dump(temp, json_file)
@@ -79,13 +82,13 @@ class FileStorage:
         try:
             with open(self.__file_repo, "r") as repo_file:
                 repo_T = json.load(repo_file)
-            for id, repos in repo_T.items:
+            for id, repos in repo_T.items():
                 temp_repos = []
                 for repo in repos:
                     temp_repos.append(dummy_classes["Repo"](**repo))
                 self.__repos[id] = temp_repos
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
     def delete_repo(self, repo, user):
         """ to delete obj from __objects if it’s inside
@@ -97,3 +100,9 @@ class FileStorage:
         """
         del self.__users[user.id]
         del self.__repos[user.id]
+
+    def get_stored_user(self, id):
+        return self.__users.get(id)
+
+    def get_stored_user_repos(self, id):
+        return self.__repos.get(id)
