@@ -1,81 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/static/landing_style.css">
-  <title>Git-Stats</title>
-</head>
-
-<body class="font-mono">
-  <div class="flex flex-row justify-around p-5 m-5
-                text-white">
-    <p><a href="#intro">Git-Stats</a></p>
-    <p><a href="#features">Features</a></p>
-    <p><a href="#about">About</a></p>
-    <p><a href="#letsgo">Get Started</a></p>
-  </div>
-  <div class="flex flex-col justify-around">
-    <div class="text-white
-                  p-10 m-3 h-screen w-100
-                  backdrop-filter backdrop-blur-sm
-                  rounded-3xl
-                  flex-grow" id="intro">
-      <div class="flex flex-col">
-        <h1 class="text-6xl pb-10 font-light tracking-wider uppercase text-center">Git-Stats</h1>
-        <div class="text-justify">
-          <p class="leading-loose">If you're building a portfolio site and want your GitHub account showcased in a
-            stylish way Git-Stats got you!</p>
-          <p class="leading-loose">Git-Stats allows you to incorporate all your awesome projects on GitHub into your
-            site in a stylish way,
-            saving you the hustle of querying the GitHub API.</p>
-          <p class="leading-loose">MORE CONTENT</p>
-        </div>
-      </div>
+<html>
+  <head>
+    <link rel="stylesheet" href="../static/landing_style.css">
+    <title>Git Stats</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        Well, hello there!
+      </h1>
+      <h2>
+        <a href="https://github.com/login/oauth/authorize?client_id={{ client_id }}">Click here</a> to begin!</a>
+      </h2>
     </div>
-    <div class="text-white p-10 m-3 h-screen backdrop-filter backdrop-blur-sm rounded-3xl flex-grow" id="features">
-      <ul class="list-disc text-justify pl-5 m-5">
-        <li class="p-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum blanditiis eveniet accusantium
-          non repudiandae, molestias facilis itaque perferendis sit a maiores? Quidem, et sit? Aut fugiat quisquam
-          deserunt minima facilis?</li>
-        <li class="p-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti rem ratione reprehenderit quis
-          illum accusantium amet. Fugit, tempore nam tempora voluptas enim aspernatur quam voluptates, eos ipsa soluta
-          facilis officia?</li>
-        <li class="p-3">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nesciunt eius perspiciatis dolor quas
-          assumenda ducimus quo doloribus aliquam ut, repudiandae nostrum odit! Rem, quibusdam amet? Inventore
-          temporibus corporis doloremque ipsam.</li>
-        <li class="p-3">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed labore, dicta minima aut fugiat
-          dolores quis libero iure dignissimos consequuntur architecto. Nihil praesentium corporis natus in quia animi
-          optio autem!</li>
-      </ul>
-    </div>
-    <div class="text-white text-justify
-                  p-10 m-3 h-screen
-                  backdrop-filter backdrop-blur-sm rounded-3xl 
-                  flex-grow
-                  flex flex-col" id="about">
-      <div class="flex-1">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores placeat officiis, distinctio sed ipsam,
-        explicabo, culpa perspiciatis cupiditate maiores blanditiis dolores quas reiciendis eligendi. Eius,
-        necessitatibus eos. Maiores, voluptate error.
-      </div>
-      <div class="m-10 flex-1 text-center transform duration-100 ease-in-out hover:scale-105 hover:-translate-y-1">
-        <button class="text-blue-300" id="letsgo" type="submit">
-          <a href="https://github.com/login/oauth/authorize?client_id={{ client_id }}">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 inline fill-current" viewBox="0 0 20 20">
-              <path fill-rule="evenodd"
-                d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-                clip-rule="evenodd" />
-            </svg>
-            <span class="text-5xl">Let's Go!</span>
-          </a>
-        </button>
-      </div>
-    </div>
-  </div>
-</body>
-
+  </body>
 </html>
