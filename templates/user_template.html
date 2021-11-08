@@ -1,43 +1,46 @@
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
 <html lang="en" dir="ltr">
    <head>
       <meta charset="utf-8">
       <link rel="stylesheet" href="../static/style.css">
    </head>
    <body>
-      <div class="bg-blue-700">
+      <div class="bg-blue-200">
          {% for repo in user_repo_info %}
-            <div class="repo-content">
-               <div class="head">
-                  <span class="repo-owner"><a href= {{ repo.repo_owner_url }}>@{{ repo.repo_owner_name }}</a></span>
-                  {% if repo.topics is defined %}
-                     {% for topic in repo.topics %}
-                        <span class="tag">{{ topic }}</span>
-                     {% endfor %}
-                  {% endif %}
+         <div class="repo-content">
+            <div class="head">
+               <span class="repo-owner"><a href= {{ repo.repo_owner_url }}>@{{
+                     repo.repo_owner_name }}</a></span>
+               {% if repo.topics is defined %}
+               {% for topic in repo.topics %}
+               <span class="tag">{{ topic }}</span>
+               {% endfor %}
+               {% endif %}
+            </div>
+            <div class="main_boi">
+               <div class="repo-name">
+                  <a href= {{ repo.html_url }}> <h2>{{ repo.name }}</h2></a>
                </div>
-               <div class="main_boi">
-                  <div class="repo-name">
-                     <a href= {{ repo.html_url }}> <h2>{{ repo.name }}</h2></a>
-                  </div>
-                  <div class="descrption">
-                     {{ repo.description }}
-                  </div>
-               </div>
-               <div class="toe">
-                  <span class="common watcher_count">watchers: {{ repo.subscribers_count }}</span>
-                  <span class="common star_count">Stars: {{ repo.stargazers_count }}</span>
-                  <span class="common forks_count">Forks: {{ repo.forks_count }}</span>
-                  {% if repo.license is defined %}
-                     <span class="license_main">{{ repo.license.name }}</span>
-                  {% endif %}
-                  <div class="user_info">
-                     <img src={{ user_info.avatar_url }} alt="avatar">
-                     <span class="username"><a href={{ user_info.html_url }}>@{{ user_info.login }}</a></span>
-                  </div>
+               <div class="descrption">
+                  {{ repo.description }}
                </div>
             </div>
+            <div class="toe">
+               <span class="common watcher_count">watchers: {{
+                  repo.subscribers_count }}</span>
+               <span class="common star_count">Stars: {{ repo.stargazers_count
+                  }}</span>
+               <span class="common forks_count">Forks: {{ repo.forks_count }}</span>
+               {% if repo.license is defined %}
+               <span class="license_main">{{ repo.license.name }}</span>
+               {% endif %}
+               <div class="user_info">
+                  <img src={{ user_info.avatar_url }} alt="avatar">
+                  <span class="username"><a href={{ user_info.html_url }}>@{{
+                        user_info.login }}</a></span>
+               </div>
+            </div>
+         </div>
          {% endfor %}
       </div>
    </body>
