@@ -1,0 +1,22 @@
+{
+  "name": "mvp",
+  "version": "1.0.0",
+  "description": "Portfolio project for ALX",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwind build static/src.css -o static/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philimon-reset/Git-Stats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/philimon-reset/Git-Stats/issues"
+  },
+  "homepage": "https://github.com/philimon-reset/Git-Stats#readme",
+  "dependencies": {
+    "tailwindcss": "^2.2.19"
+  }
+}
