@@ -5,9 +5,7 @@
       <link rel="stylesheet" href="../static/style.css">
       <link rel="stylesheet" href="../static/src.css">
    </head>
-
-
-   <body class="bg-gray-800 p-0 m-0 text-white">
+   <body class="bg-gray-800 p-0 m-0 text-white font-bold box-border">
       <section class="main">
                {% for repo in user_repo_info %}
                <article class="card rounded-lg">
@@ -29,14 +27,16 @@
                      </div>
                   </div>
                   <div class="toe">
-                     <span class="common watcher_count">watchers: {{
-                        repo.subscribers_count }}</span>
-                     <span class="common star_count">Stars: {{ repo.stargazers_count
-                        }}</span>
-                     <span class="common forks_count">Forks: {{ repo.forks_count }}</span>
-                     {% if repo.license is defined %}
-                     <span class="license_main">{{ repo.license.name }}</span>
-                     {% endif %}
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: {{
+                           repo.subscribers_count }}</span>
+                        <span class="star_count">Stars: {{ repo.stargazers_count
+                           }}</span>
+                        <span class="forks_count">Forks: {{ repo.forks_count }}</span>
+                        {% if repo.license is defined %}
+                        <span class="license_main">{{ repo.license.name }}</span>
+                        {% endif %}
+                     </div>
                      <div class="user_info">
                         <img src={{ user_info.avatar_url }} alt="avatar">
                         <span class="username"><a href={{ user_info.html_url }}>@{{
