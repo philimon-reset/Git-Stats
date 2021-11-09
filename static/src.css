@@ -26,6 +26,7 @@ body {
    height: 450px;
    max-height: 500px;
    width: 490px;
+   max-width: 500px;
  }
 
  .card:hover {
