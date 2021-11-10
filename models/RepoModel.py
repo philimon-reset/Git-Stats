@@ -19,10 +19,12 @@ class Repo():
         self.size = 0
         self.langs = {}
         self.html_url = ""
+        self.user_id = 0
         if kwargs:
             for attr, val in kwargs.items():
                 if hasattr(self, attr):
                     setattr(self, attr, val)
+
     def update(self, *args, **kwargs):
         """ update repo attributes """
         for attr, val in kwargs.items():
@@ -32,8 +34,8 @@ class Repo():
     def save(self):
         """ save repo attributes in the storage
         """
-        storage_engine.Storage_Json.new_user(self)
-        storage_engine.Storage_Json.save_user()
+        storage_engine.Storage_Json.new_repo(self, self.user_id)
+        storage_engine.Storage_Json.save_repos()
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of the instance"""

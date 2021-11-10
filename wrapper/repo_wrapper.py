@@ -1,7 +1,7 @@
 from requests import get
 
 
-def get_user_repos(token, headers={}, etag=None):
+def get_user_repos(token, user_id, headers={}, etag=None):
     """
         Gets public repository information.
         returns None if user repository information hasn't changed based on the etag
@@ -24,6 +24,7 @@ def get_user_repos(token, headers={}, etag=None):
             repo["owner_id"] = repo["owner"]["id"]
             repo["repo_owner_name"] = repo["owner"]["login"]
             repo["repo_owner_url"] = repo["owner"]["html_url"]
+            repo["user_id"] = user_id
             repos_info["repos"].append(repo)
         repos_info["etag"] = result.headers.get("etag")
     return repos_info

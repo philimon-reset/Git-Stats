@@ -41,11 +41,11 @@ def callback():
     user_info = user_request.json()
     user_id = user_info.get("id")
 
-    if (not Storage_Json.get_stored_user(str(user_id))):
+    if (not Storage_Json.get_stored_user(user_id)):
         user_info["user_etag"] = user_request.headers.get("etag")
         user_info["access_token"] = access_token
 
-        repo_request = get_user_repos(access_token, headers=header)
+        repo_request = get_user_repos(access_token, user_id, headers=header)
         user_info["repo_etag"] = repo_request["etag"]
         repo_objs = [RepoModel.Repo(**repo) for repo in repo_request["repos"]]
         
@@ -59,16 +59,36 @@ def callback():
 
 @app.route("/gitstat/<string:user_id>")
 def get_template(user_id):
-    user = Storage_Json.get_stored_user(str(user_id)).to_dict()
-    user_repos = [repo.to_dict() for repo in Storage_Json.get_stored_user_repos(str(user_id))]
-    # test_update = get_user(user["access_token"], user["user_etag"])
-    # if (test_update):
-    #     updated_user_info = test_update.json()
-    #     updated_user_info["user_etag"] = test_update.header.get("etag")
-    #     user.update(**updated_user_info)
-    #     user.save()
-    # user = Storage_Json.get_user(user_id).to_dict()
+    update_user(user_id)
+    update_user_repos(user_id)
+    user = Storage_Json.get_stored_user(user_id).to_dict()
+    user_repos = [repo.to_dict() for repo in Storage_Json.get_stored_user_repos(user_id)]
     return render_template('user_template.html', user_info=user, user_repo_info=user_repos)
+
+
+def update_user(user_id):
+    user = Storage_Json.get_stored_user(user_id)
+    update = get_user(user.access_token, user.user_etag)
+    if update:
+        updated_user_info = update.json()
+        updated_user_info["user_etag"] = update.headers.get("etag")
+        user.update(**updated_user_info)
+        user.save()
+
+def update_user_repos(user_id):
+    user = Storage_Json.get_stored_user(user_id)
+    user_repos = Storage_Json.get_stored_user_repos(user_id)
+    update = get_user_repos(user.access_token, user.id, etag=user.repo_etag)
+    if update["repos"]:
+        user.repo_etag = update["etag"]
+        user.save()
+        # hot fix
+        for repo in update["repos"]:
+            for old_repo in user_repos:
+                if repo["id"] == old_repo.id:
+                    old_repo.update(**repo)
+                    old_repo.save()
+        
 
 if __name__ == "__main__":
     app.run()
