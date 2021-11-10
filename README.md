@@ -103,6 +103,13 @@ We can use this tool to make our projects precentable to future employers withou
 
 No licenses available.
 
+## Related projects
+
+None found so far. The project that resembles git stats most is disquss tool.
+
+## Contributing
+
+Add pull requests to improve Git stats where it can be improved.
 
 
 <!-- CONTACT -->
