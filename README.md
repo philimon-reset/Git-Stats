@@ -111,7 +111,8 @@ No licenses available.
 
 Hizkyas Tekele:
 * Github: [](https://github.com/Doro-000)
-* Linkdein: []()
+* Linkdein: [](http://www.linkedin.com/in/Hizkyas-T-Aberra)
+    <br />
 Philimon Derib:
 * Github: [](https://github.com/philimon-reset)
 * Linkdein: [](https://www.linkedin.com/in/philimon-derib/)
