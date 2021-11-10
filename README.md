@@ -56,7 +56,6 @@ Here comes git stats to the rescue. Working with you portfolio website, be able 
 
 ### Built With
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [tailwind](https://tailwindcss.com)
 * [JQuery](https://jquery.com)
 * [Flask](https://flask.palletsprojects.com/)
