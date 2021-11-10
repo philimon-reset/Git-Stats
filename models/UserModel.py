@@ -3,6 +3,8 @@ import storage_engine
 """ User object """
 class User():
     def __init__(self, *args, **kwargs):
+        """ Initialize the user object
+        """
         self.access_token = ""
         self.id = 0
         self.login = ""
@@ -36,7 +38,7 @@ class User():
         storage_engine.Storage_Json.save_user()
 
     def save_repos(self, repos=[]):
-        """ ***U
+        """ save repo objects related to a user
         """
         for x in repos:
             storage_engine.Storage_Json.new_repo(x, self.id)
