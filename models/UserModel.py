@@ -34,14 +34,15 @@ class User():
         """
         storage_engine.Storage_Json.new_user(self)
         storage_engine.Storage_Json.save_user()
+
     def save_repos(self, repos=[]):
         """ ***U
         """
         for x in repos:
-            storage_engine.Storage_Json.new_repo(x, self)
+            storage_engine.Storage_Json.new_repo(x, self.id)
         storage_engine.Storage_Json.save_repos()
 
-
+    
     def to_dict(self):
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()

@@ -38,11 +38,11 @@ class FileStorage:
         """
         self.__users[user.id] = user
 
-    def new_repo(self, repo, user):
+    def new_repo(self, repo, user_id):
         """ add an instance to the repo dictionary """
-        if not (self.__repos.get(user.id)):
-            self.__repos[user.id] = []
-        self.__repos[user.id].append(repo)
+        if not (self.__repos.get(user_id)):
+            self.__repos[user_id] = []
+        self.__repos[user_id].append(repo)
 
     def save_user(self):
         """
@@ -76,7 +76,7 @@ class FileStorage:
             with open(self.__file_user, "r") as user_file:
                 user_T = json.load(user_file)
             for id, user_obj in user_T.items():
-                self.__users[id] = dummy_classes["User"](**user_obj)
+                self.__users[int(id)] = dummy_classes["User"](**user_obj)
         except:
             pass
         try:
@@ -86,7 +86,7 @@ class FileStorage:
                 temp_repos = []
                 for repo in repos:
                     temp_repos.append(dummy_classes["Repo"](**repo))
-                self.__repos[id] = temp_repos
+                self.__repos[int(id)] = temp_repos
         except Exception as e:
             print(e)
 
@@ -102,7 +102,7 @@ class FileStorage:
         del self.__repos[user.id]
 
     def get_stored_user(self, id):
-        return self.__users.get(id)
+        return self.__users.get(int(id))
 
     def get_stored_user_repos(self, id):
-        return self.__repos.get(id)
+        return self.__repos.get(int(id))
