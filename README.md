@@ -1,15 +1,13 @@
 <br />
 <p align="center">
   <a href="https://github.com/philimon-reset/Git-Stats">
-    <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.kindpng.com%2Fimgv%2Fwooxwb_github-icon-download-at-icons8-github-icon-white%2F&psig=AOvVaw20TgCiajsAXMEEu5YUWWua&ust=1636652514476000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCICO0rPbjfQCFQAAAAAdAAAAABAD" alt="Logo" width="80" height="80">
+    <img src="Git-Stats/logo.png" alt="Logo" width="80" height="80">
   </a>
-
   <h3 align="center">Git Stats</h3>
-
   <p align="center">
     A convienient tool for developers to showcase github projects
     <br />
-    <a href="https://github.com/philimon-reset/Git-Stats"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/philimon-reset/Git-Stats"><strong>Explore the docs»</strong></a>
   </p>
 </p>
 
