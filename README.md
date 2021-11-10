@@ -44,7 +44,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](/intro.jpg)
+[![Product Name Screen Shot][product-screenshot]](intro.jpg)
 
 We have all been their, wanting to showcase our best projects to get that dream gig, but building websites for all those projects might not seem like a great idea.
 
@@ -86,7 +86,7 @@ This is an example of how you may integrate this tool for your requirments.
 ## Usage
 
 We can use this tool to make our projects precentable to future employers without needlessly building multiple site for each one.
-[](/SharedScreenshot.jpg)
+[](SharedScreenshot.jpg)
 
 
 <!-- ROADMAP -->
