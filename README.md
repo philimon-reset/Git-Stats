@@ -18,7 +18,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#Introduction">Introduction</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
@@ -38,8 +38,8 @@
 
 
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+<!-- Introduction -->
+## Introduction
 
 <img src="intro.jpg" alt="Shot">
 
@@ -53,6 +53,8 @@ So, what are you supposed to do?
 
 Here comes git stats to the rescue. Working with you portfolio website, be able to insert amazing looking card lists showcasing your github repositories
 
+!! THE SITE ISNT RUNNING YET AND IS BEING USED WITH NGROC AND [OUR LOCAL HOST](http://localhost:5000.com)
+
 
 ### Built With
 
@@ -61,6 +63,7 @@ Here comes git stats to the rescue. Working with you portfolio website, be able 
 * [Flask](https://flask.palletsprojects.com/)
 * [Python](https://python.org)
 * [Vue.js](https://vuejs.org/)
+* [Ngrok](https://dashboard.ngrok.com/)
 
 
 
