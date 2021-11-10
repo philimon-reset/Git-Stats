@@ -110,11 +110,11 @@ No licenses available.
 ## Contact
 
 Hizkyas Tekele:
-* Github: [](https://github.com/Doro-000)
-* Linkdein: [](http://www.linkedin.com/in/Hizkyas-T-Aberra)
+* Github: [https://github.com/Doro-000](https://github.com/Doro-000)
+* Linkdein: [(http://www.linkedin.com/in/Hizkyas-T-Aberra](http://www.linkedin.com/in/Hizkyas-T-Aberra)
     <br />
 Philimon Derib:
-* Github: [](https://github.com/philimon-reset)
-* Linkdein: [](https://www.linkedin.com/in/philimon-derib/)
+* Github: [https://github.com/philimon-reset](https://github.com/philimon-reset)
+* Linkdein: [https://www.linkedin.com/in/philimon-derib/](https://www.linkedin.com/in/philimon-derib/)
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/philimon-reset/Git-Stats)
+Project Link: [https://github.com/philimon-reset/Git-Stats](https://github.com/philimon-reset/Git-Stats)
