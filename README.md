@@ -26,16 +26,13 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
@@ -44,7 +41,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](intro.jpg)
+<img src="intro.jpg" alt="Shot">
 
 We have all been their, wanting to showcase our best projects to get that dream gig, but building websites for all those projects might not seem like a great idea.
 
@@ -86,7 +83,7 @@ This is an example of how you may integrate this tool for your requirments.
 ## Usage
 
 We can use this tool to make our projects precentable to future employers without needlessly building multiple site for each one.
-[](SharedScreenshot.jpg)
+<img src="SharedScreenshot.jpg" alt="Shot">
 
 
 <!-- ROADMAP -->
