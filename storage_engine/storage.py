@@ -102,7 +102,11 @@ class FileStorage:
         del self.__repos[user.id]
 
     def get_stored_user(self, id):
+        """ Get information on an instance of a user
+        """
         return self.__users.get(int(id))
 
     def get_stored_user_repos(self, id):
+        """ Get information on an instance of a repo
+        """
         return self.__repos.get(int(id))

@@ -1,7 +1,7 @@
+""" Application server for the git stats project"""
 from flask import Flask, render_template, request
 from requests import post
 from os import getenv
-
 from wrapper.user_wrapper import get_user
 from wrapper.repo_wrapper import get_user_repos
 from storage_engine import Storage_Json
@@ -14,11 +14,14 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    """ begining route where the project begins
+    """
     return render_template("index.html", client_id=CLIENT_ID)
 
 
 @app.route("/callback")
 def callback():
+    """ callback route sent after github authorization is completed"""
     session_code = request.args.get("code")
     data = {
         "client_id": CLIENT_ID,
@@ -59,6 +62,7 @@ def callback():
 
 @app.route("/gitstat/<string:user_id>")
 def get_template(user_id):
+    """ build and return the template containing the account's information"""
     update_user(user_id)
     update_user_repos(user_id)
     user = Storage_Json.get_stored_user(user_id).to_dict()
@@ -67,6 +71,7 @@ def get_template(user_id):
 
 
 def update_user(user_id):
+    """ update user info is the user is already in the database"""
     user = Storage_Json.get_stored_user(user_id)
     update = get_user(user.access_token, user.user_etag)
     if update:
@@ -76,6 +81,7 @@ def update_user(user_id):
         user.save()
 
 def update_user_repos(user_id):
+    """ ubdate the users repo if the repo is already in the database"""
     user = Storage_Json.get_stored_user(user_id)
     user_repos = Storage_Json.get_stored_user_repos(user_id)
     update = get_user_repos(user.access_token, user.id, etag=user.repo_etag)
@@ -91,4 +97,5 @@ def update_user_repos(user_id):
         
 
 if __name__ == "__main__":
+    """ run the flask instance"""
     app.run()

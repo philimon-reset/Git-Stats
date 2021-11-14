@@ -4,6 +4,8 @@ import storage_engine
 class Repo():
     """Repo object"""
     def __init__(self, *args, **kwargs):
+        """ Initialize the Repo object
+        """
         self.id = 0
         self.name = ""
         self.owner_id = 0
