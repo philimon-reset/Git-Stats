@@ -1,4 +1,5 @@
 body {
         background-image: url(/static/topography.svg);
         background-color: #302e33;
+        font-family: 'Quicksand', sans-serif;
 }
