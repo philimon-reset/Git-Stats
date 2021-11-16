@@ -1,16 +1,19 @@
 """ Application server for the git stats project"""
+from typing import Coroutine
 from flask import Flask, render_template, request
 from requests import post
+from flask_cors import CORS
 from os import getenv
 from wrapper.user_wrapper import get_user
 from wrapper.repo_wrapper import get_user_repos
-from storage_engine import Storage_Json
+from storage_engine import Storage_Json, storage
 from models import UserModel, RepoModel
 
 CLIENT_ID = getenv('GH_BASIC_CLIENT_ID')
 CLIENT_SECRET = getenv('GH_BASIC_SECRET_ID')
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def index():
@@ -93,7 +96,7 @@ def update_user_repos(user_id):
             for old_repo in user_repos:
                 if repo["id"] == old_repo.id:
                     old_repo.update(**repo)
-                    old_repo.save()
+        Storage_Json.save_repos()
         
 
 if __name__ == "__main__":

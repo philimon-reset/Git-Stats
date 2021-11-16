@@ -22,7 +22,6 @@ class FileStorage:
     __users = {}
     __repos = {}
 
-
     def all(self, cls=None):
         """returns a dictionary containing every object"""
         if (cls == None):
@@ -87,8 +86,8 @@ class FileStorage:
                 for repo in repos:
                     temp_repos.append(dummy_classes["Repo"](**repo))
                 self.__repos[int(id)] = temp_repos
-        except Exception as e:
-            print(e)
+        except:
+            pass
 
     def delete_repo(self, repo, user):
         """ to delete obj from __objects if it’s inside
