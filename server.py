@@ -6,6 +6,7 @@ from wrapper.user_wrapper import get_user
 from wrapper.repo_wrapper import get_user_repos
 from storage_engine import Storage_Json
 from models import UserModel, RepoModel
+import uuid
 
 CLIENT_ID = getenv('GH_BASIC_CLIENT_ID')
 CLIENT_SECRET = getenv('GH_BASIC_SECRET_ID')
@@ -68,7 +69,7 @@ def get_template(user_id):
     #     user.update(**updated_user_info)
     #     user.save()
     # user = Storage_Json.get_user(user_id).to_dict()
-    return render_template('user_template.html', user_info=user, user_repo_info=user_repos)
+    return render_template('user_template.html', user_info=user, user_repo_info=user_repos, cache_id=uuid.uuid4())
 
 if __name__ == "__main__":
     app.run()
