@@ -1,6 +1,5 @@
 """ Application server for the git stats project"""
-from typing import Coroutine
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from requests import post
 from flask_cors import CORS
 from os import getenv
@@ -72,6 +71,10 @@ def get_template(user_id):
     user_repos = [repo.to_dict() for repo in Storage_Json.get_stored_user_repos(user_id)]
     return render_template('user_template.html', user_info=user, user_repo_info=user_repos)
 
+@app.route("/getembed")
+def get_embed():
+    """get embed script"""
+    return send_from_directory("static", "embed.js")
 
 def update_user(user_id):
     """ update user info is the user is already in the database"""
@@ -97,7 +100,7 @@ def update_user_repos(user_id):
                 if repo["id"] == old_repo.id:
                     old_repo.update(**repo)
         Storage_Json.save_repos()
-        
+
 
 if __name__ == "__main__":
     """ run the flask instance"""
