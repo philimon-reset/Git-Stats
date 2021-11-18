@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<script type="text/javascript" class="__REQUESTLY__SCRIPT">(function (namespace) {
+  window[namespace] = window[namespace] || {};
+  window[namespace].responseRules = {};
+
+  const isApplicableOnUrl = (url) =>
+    window[namespace].responseRules.hasOwnProperty(url);
+  const getResponseRule = (url) => window[namespace].responseRules[url];
+  const notifyRuleApplied = (rule) => {
+    window.postMessage(
+      {
+        from: "requestly",
+        type: "response_rule_applied",
+        id: rule.id,
+      },
+      window.location.href
+    );
+  };
+
+  // Intercept XMLHttpRequest
+  const onReadyStateChange = function () {
+    if (this.readyState === 4 && isApplicableOnUrl(this.responseURL)) {
+      const responseRule = getResponseRule(this.responseURL);
+      const { response } = responseRule;
+      const responseType = this.responseType;
+      const customResponse =
+        response.type === "code"
+          ? responseRule.evaluator({
+              method: this.method,
+              url: this.responseURL,
+              requestHeaders: this.requestHeaders,
+              requestData: this.requestData,
+              responseType: this.responseType,
+              response: this.response,
+            })
+          : response.value;
+
+      Object.defineProperty(this, "response", {
+        get: function () {
+          if (response.type === "static" && responseType === "json") {
+            return JSON.parse(customResponse);
+          }
+          return customResponse;
+        },
+      });
+
+      if (responseType === "" || responseType === "text") {
+        Object.defineProperty(this, "responseText", {
+          get: function () {
+            return customResponse;
+          },
+        });
+      }
+
+      notifyRuleApplied(responseRule);
+    }
+  };
+
+  const XHR = XMLHttpRequest;
+  XMLHttpRequest = function () {
+    const xhr = new XHR();
+    xhr.addEventListener(
+      "readystatechange",
+      onReadyStateChange.bind(xhr),
+      false
+    );
+    return xhr;
+  };
+  XMLHttpRequest.prototype = XHR.prototype;
+  Object.entries(XHR).map(([key, val]) => {
+    XMLHttpRequest[key] = val;
+  });
+
+  const open = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function (method) {
+    this.method = method;
+    open.apply(this, arguments);
+  };
+
+  const send = XMLHttpRequest.prototype.send;
+  XMLHttpRequest.prototype.send = function (data) {
+    this.requestData = data;
+    send.apply(this, arguments);
+  };
+
+  let setRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
+  XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
+    this.requestHeaders = this.requestHeaders || {};
+    this.requestHeaders[header] = value;
+    setRequestHeader.apply(this, arguments);
+  };
+
+  // Intercept fetch API
+  const _fetch = fetch;
+  fetch = async (resource, initOptions) => {
+    const url =
+      resource instanceof Request ? resource.url : resource.toString();
+    const fetchedResponse = await _fetch(resource, initOptions);
+
+    if (!isApplicableOnUrl(url)) {
+      return fetchedResponse;
+    }
+
+    let method, requestHeaders, requestData;
+
+    if (resource instanceof Request) {
+      const request = resource.clone();
+      method = request.method || "GET";
+      requestHeaders =
+        request.headers &&
+        Array.from(request.headers).reduce((obj, [key, val]) => {
+          obj[key] = val;
+          return obj;
+        }, {});
+      requestData = await request.text();
+    } else {
+      method = initOptions.method || "GET";
+      if (initOptions.headers instanceof Headers) {
+        requestHeaders = Array.from(initOptions.headers).reduce(
+          (obj, [key, val]) => {
+            obj[key] = val;
+            return obj;
+          },
+          {}
+        );
+      } else {
+        requestHeaders = initOptions.headers;
+      }
+      requestData = initOptions.body;
+    }
+
+    const responseRule = getResponseRule(url);
+    const customResponseText =
+      responseRule.response.type === "code"
+        ? responseRule.evaluator({
+            method,
+            url,
+            requestHeaders,
+            requestData,
+            response: await fetchedResponse.text(),
+          })
+        : responseRule.response.value;
+
+    notifyRuleApplied(responseRule);
+
+    return new Response(new Blob([customResponseText]), {
+      status: fetchedResponse.status,
+      statusText: fetchedResponse.statusText,
+      headers: fetchedResponse.headers,
+    });
+  };
+})('__REQUESTLY__')</script><head>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="../static/style.css?3775fc2f-16f4-4c1b-9d85-69d41af1efc9">
+      <link rel="stylesheet" href="../static/src.css?3775fc2f-16f4-4c1b-9d85-69d41af1efc9">
+   </head>
+   <body class="bg-gray-800" data-new-gr-c-s-check-loaded="14.1039.0" data-gr-ext-installed="">
+      <section class="main rounded-lg">
+	     <article class="big-card">
+               <article class="card rounded-lg ">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/Git-Stats"> <h2>Git-Stats</h2></a>
+                     </div>
+                     <div class="descrption">
+                        Portfolio project for ALX
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/alx-system_engineering-devops"> <h2>alx-system_engineering-devops</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 1</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/AirBnB_clone_v3"> <h2>AirBnB_clone_v3</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/livejo">@livejo</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/livejo/AirBnB_clone_v4"> <h2>AirBnB_clone_v4</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/alx-higher_level_programming"> <h2>alx-higher_level_programming</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 1</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/AirBnB_clone_v2"> <h2>AirBnB_clone_v2</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 1</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/what-happens-when"> <h2>what-happens-when</h2></a>
+                     </div>
+                     <div class="descrption">
+                        An attempt to answer the age old interview question "What happens when you type google.com into your browser and press enter?"
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/alx-low_level_programming"> <h2>alx-low_level_programming</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 1</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/AirBnB_clone_good"> <h2>AirBnB_clone_good</h2></a>
+                     </div>
+                     <div class="descrption">
+                        AirBnB clone - MySQL
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/monty"> <h2>monty</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/binary_trees"> <h2>binary_trees</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/binary_trees-1"> <h2>binary_trees-1</h2></a>
+                     </div>
+                     <div class="descrption">
+                        Implementation of binary trees and various operations on them
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/AirBnB_clone"> <h2>AirBnB_clone</h2></a>
+                     </div>
+                     <div class="descrption">
+                         first step towards building your first full web application: the AirBnB clone.
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 1</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/3D-ResNets-PyTorch"> <h2>3D-ResNets-PyTorch</h2></a>
+                     </div>
+                     <div class="descrption">
+                        3D ResNets for Action Recognition (CVPR 2018)
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main">MIT License</span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/sorting_algorithms"> <h2>sorting_algorithms</h2></a>
+                     </div>
+                     <div class="descrption">
+                        Implementation of various sorting algorithms in the C programming language
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/Doro-000">@Doro-000</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/Doro-000/sorting_algorithms"> <h2>sorting_algorithms</h2></a>
+                     </div>
+                     <div class="descrption">
+                        Implementation of various sorting algorithms in the C programming language
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 1</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/Python"> <h2>Python</h2></a>
+                     </div>
+                     <div class="descrption">
+                        All Algorithms implemented in Python
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 1</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main">MIT License</span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/simple_shell"> <h2>simple_shell</h2></a>
+                     </div>
+                     <div class="descrption">
+                        A simple UNIX command interpreter
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/Doro-000">@Doro-000</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/Doro-000/simple_shell"> <h2>simple_shell</h2></a>
+                     </div>
+                     <div class="descrption">
+                        A simple UNIX command interpreter
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 1</span>
+                        <span class="forks_count">Forks: 1</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/alx-higher_level_programming-1"> <h2>alx-higher_level_programming-1</h2></a>
+                     </div>
+                     <div class="descrption">
+                        High level programming
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/Doro-000">@Doro-000</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/Doro-000/printf"> <h2>printf</h2></a>
+                     </div>
+                     <div class="descrption">
+                        A duplicate of printf
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 2</span>
+                        <span class="forks_count">Forks: 2</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/printf"> <h2>printf</h2></a>
+                     </div>
+                     <div class="descrption">
+                        A duplicate of printf
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/shell_phili"> <h2>shell_phili</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 1</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/Best-README-Template"> <h2>Best-README-Template</h2></a>
+                     </div>
+                     <div class="descrption">
+                        An awesome README template to jumpstart your projects! 
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main">MIT License</span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/professional-programming"> <h2>professional-programming</h2></a>
+                     </div>
+                     <div class="descrption">
+                        A collection of full-stack resources for programmers.
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 1</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main">MIT License</span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/alx-low_level_programming-1"> <h2>alx-low_level_programming-1</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/alx-system_engineering-devops-1"> <h2>alx-system_engineering-devops-1</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/alx-zero_day"> <h2>alx-zero_day</h2></a>
+                     </div>
+                     <div class="descrption">
+                        I'm now a ALX Student, this is my first repository as a full-stack engineer
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/alx-zero_day1"> <h2>alx-zero_day1</h2></a>
+                     </div>
+                     <div class="descrption">
+                        I'm now a ALX Student, this is my first repository as a full-stack engineer
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/codew"> <h2>codew</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/suduko"> <h2>suduko</h2></a>
+                     </div>
+                     <div class="descrption">
+                        using back tracking algo too make a suduko solver
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/hello-world-"> <h2>hello-world-</h2></a>
+                     </div>
+                     <div class="descrption">
+                        beginner steps in using github
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/0x01.c"> <h2>0x01.c</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/sect"> <h2>sect</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/make_magic_happen"> <h2>make_magic_happen</h2></a>
+                     </div>
+                     <div class="descrption">
+                        Make Magic Happen
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+               
+               <article class="card rounded-lg">
+                  <div class="head">
+                     <h2 class="repo-owner"><a href="https://github.com/philimon-reset">@philimon-reset</a></h2>
+                     
+                     
+                     
+                  </div>
+                  <div class="main_boi">
+                     <div class="repo-name">
+                        <a href="https://github.com/philimon-reset/0x03.py"> <h2>0x03.py</h2></a>
+                     </div>
+                     <div class="descrption">
+                        None
+                     </div>
+                  </div>
+                  <div class="toe">
+                     <div class="common rounded-lg border-2 border-white">
+                        <span class="watcher_count">watchers: 0</span>
+                        <span class="star_count">Stars: 0</span>
+                        <span class="forks_count">Forks: 0</span>
+                        
+                        <span class="license_main"></span>
+                        
+                     </div>
+                  </div>
+               
+            </article>
+	</article>
+   <div class="user_info">
+      <img src="https://avatars.githubusercontent.com/u/58902914?v=4" alt="avatar">
+      <span class="username rounded-lg border-2"><a href="https://github.com/philimon-reset">@philimon-reset</a></span>
+        </div>
+      </section>
+   
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
