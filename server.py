@@ -1,5 +1,6 @@
 """ Application server for the git stats project"""
-from flask import Flask, render_template, request, send_from_directory
+
+from flask import Flask, render_template, request, send_from_directory, redirect
 from requests import post
 from flask_cors import CORS
 from os import getenv
@@ -13,6 +14,9 @@ CLIENT_SECRET = getenv('GH_BASIC_SECRET_ID')
 
 app = Flask(__name__)
 CORS(app)
+
+# Routes
+##########################################################################
 
 @app.route('/')
 def index():
@@ -53,14 +57,16 @@ def callback():
         repo_request = get_user_repos(access_token, user_id, headers=header)
         user_info["repo_etag"] = repo_request["etag"]
         repo_objs = [RepoModel.Repo(**repo) for repo in repo_request["repos"]]
-        
+
         new_user = UserModel.User(**user_info)
         new_user.save()
 
         new_user.save_repos(repo_objs)
 
     # return "success"
-    return render_template("landing.html", user=user_info)
+    # return render_template("landing.html", user=user_info)
+    return redirect(f"/profile/{user_id}")
+
 
 @app.route("/gitstat/<string:user_id>")
 def get_template(user_id):
@@ -68,13 +74,31 @@ def get_template(user_id):
     update_user(user_id)
     update_user_repos(user_id)
     user = Storage_Json.get_stored_user(user_id).to_dict()
-    user_repos = [repo.to_dict() for repo in Storage_Json.get_stored_user_repos(user_id)]
-    return render_template('user_template.html', user_info=user, user_repo_info=user_repos)
+    user_repos = [repo.to_dict()
+                  for repo in Storage_Json.get_stored_user_repos(user_id)]
+    return render_template(
+        'user_template.html',
+        user_info=user,
+        user_repo_info=user_repos)
+
 
 @app.route("/getembed")
 def get_embed():
     """get embed script"""
     return send_from_directory("static", "embed.js")
+
+@app.route("/profile/<string:user_id>")
+def profile(user_id):
+    """
+    profile page
+    """
+    user_info = Storage_Json.get_stored_user(user_id).to_dict()
+    return render_template("landing.html", user=user_info)
+
+
+
+# Functions
+##########################################################################
 
 def update_user(user_id):
     """ update user info is the user is already in the database"""
@@ -85,6 +109,7 @@ def update_user(user_id):
         updated_user_info["user_etag"] = update.headers.get("etag")
         user.update(**updated_user_info)
         user.save()
+
 
 def update_user_repos(user_id):
     """ ubdate the users repo if the repo is already in the database"""
@@ -102,6 +127,7 @@ def update_user_repos(user_id):
         Storage_Json.save_repos()
 
 
+##########################################################################
 if __name__ == "__main__":
     """ run the flask instance"""
     app.run()

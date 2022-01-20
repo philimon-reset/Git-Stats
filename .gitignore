@@ -3,3 +3,4 @@ test.py
 __pycache__
 user.json
 repo.json
+*.bat
