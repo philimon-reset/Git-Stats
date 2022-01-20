@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Landing</title>
-        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/static/landing_style.css">
-</head>
-<body class="backdrop-filter backdrop-blur-sm flex flex-col h-screen">
-        <h1 class="text-white text-6xl pb-10 font-light tracking-wider uppercase text-center mt-10">
-                Hey {{ user.name }} 👋
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing</title>
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/landing_style.css" />
+  </head>
+  <body class="backdrop-filter backdrop-blur-sm flex flex-col h-screen">
+    <h1
+      class="text-white text-6xl pb-10 font-light tracking-wider uppercase text-center mt-10"
+    >
+      Hey {{ user.name }} 👋
+    </h1>
+    <div class="flex felx-row">
+      <div class="flex-1 h-2\/4 mx-10 p-5 border-8" id="instructions">
+        <h1 class="text-white font-bold pb-5">
+          Copy the Following into your site &#128077;
         </h1>
-        <div class="flex felx-row">
-                <div class="flex-1 h-2\/4 mx-10 p-5 border-8" id="instructions">
-                        <h1 class="text-white font-bold pb-5">Copy the Following into your site &#128077;</h1>
-                        <code class="text-white">
-                                <pre>
+        <code class="text-white">
+          <pre>
 &lt;div id="git_stats"&gt;&lt;/div&gt;
 &lt;script&gt;
         window.git_stats_config = {
@@ -33,20 +43,23 @@
                 (document.head).appendChild(script);
         })();
 &lt;/script&gt;
-                                </pre>
-                        </code>
-                </div>
-                <div class="flex-1 h-2\/4 mx-10 p-10" id="usr_info">
-                        <p class="text-white text-3xl font-light">
-                                YOUR_USER_ID = {{ user.id }}
-                        </p>
-                        <p class="text-white p-10 text-2xl">
-                                CLick  <a href="https://127.0.0.1:5000/gitstats/{{ user.id }}"> <b>here</b></a> to check it out !
-                        </p>
-                </div>
-        </div>
-        <div>
-
-        </div>
-</body>
+                                </pre
+          >
+        </code>
+      </div>
+      <div class="flex-1 h-2\/4 mx-10 p-10" id="usr_info">
+        <p class="text-white text-3xl font-light">
+          YOUR_USER_ID = {{ user.id }}
+        </p>
+        <p class="text-white p-10 text-2xl">
+          CLick
+          <a href="http://127.0.0.1:5000/gitstat/{{ user.id }}">
+            <b>here</b></a
+          >
+          to check it out !
+        </p>
+      </div>
+    </div>
+    <div></div>
+  </body>
 </html>
