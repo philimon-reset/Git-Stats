@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, send_from_directory, redirect
 from requests import post
 from flask_cors import CORS
 from os import getenv
+from uuid import uuid4
 from wrapper.user_wrapper import get_user
 from wrapper.repo_wrapper import get_user_repos
 from storage_engine import Storage_Json
@@ -78,6 +79,7 @@ def get_template(user_id):
                   for repo in Storage_Json.get_stored_user_repos(user_id)]
     return render_template(
         'user_template.html',
+        cache_id=uuid4(),
         user_info=user,
         user_repo_info=user_repos)
 
@@ -115,7 +117,7 @@ def register_url(user_id):
 ##########################################################################
 
 def update_user(user_id):
-    """ update user info is the user is already in the database"""
+    """ update user info if the user is already in the database"""
     user = Storage_Json.get_stored_user(user_id)
     update = get_user(user.access_token, user.user_etag)
     if update:
@@ -126,7 +128,7 @@ def update_user(user_id):
 
 
 def update_user_repos(user_id):
-    """ ubdate the users repo if the repo is already in the database"""
+    """ update the users repo if the repo is already in the database"""
     user = Storage_Json.get_stored_user(user_id)
     user_repos = Storage_Json.get_stored_user_repos(user_id)
     update = get_user_repos(user.access_token, user.id, etag=user.repo_etag)
