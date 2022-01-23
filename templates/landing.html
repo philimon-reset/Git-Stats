@@ -58,8 +58,12 @@
           >
           to check it out !
         </p>
+        <form action="/register_url/{{ user.id }}" method="post">
+            <label for="urlinput">New website:</label>
+            <input type="text" id="urlinput" name="urlinput">
+            <input type="submit" value="Add">
+        </form>
       </div>
     </div>
-    <div></div>
   </body>
 </html>

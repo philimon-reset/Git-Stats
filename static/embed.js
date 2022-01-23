@@ -33,9 +33,25 @@
 // 		});
 // };
 
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
+
 function render_git_stats() {
 	let my_frame = document.createElement("iframe");
-	my_frame.src = 'http://127.0.0.1:5000/gitstat/'+window.git_stats_config.usr_id;
+	my_frame.src = 'http://127.0.0.1:5000/gitstat/'+ getCookie("GitStatUsr")
 	my_frame.id = "git-stats-embeded";
 	let div = document.getElementById("git_stats");
 	div.appendChild(my_frame);

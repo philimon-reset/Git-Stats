@@ -1,12 +1,12 @@
 """ Application server for the git stats project"""
 
-from flask import Flask, render_template, request, send_from_directory, redirect
+from flask import Flask, render_template, request, send_from_directory, redirect, make_response
 from requests import post
 from flask_cors import CORS
 from os import getenv
 from wrapper.user_wrapper import get_user
 from wrapper.repo_wrapper import get_user_repos
-from storage_engine import Storage_Json, storage
+from storage_engine import Storage_Json
 from models import UserModel, RepoModel
 
 CLIENT_ID = getenv('GH_BASIC_CLIENT_ID')
@@ -82,10 +82,16 @@ def get_template(user_id):
         user_repo_info=user_repos)
 
 
-@app.route("/getembed")
+## TODO proper referer identification
+@app.route("/getembed", methods=["GET"])
 def get_embed():
     """get embed script"""
-    return send_from_directory("static", "embed.js")
+    referer = request.headers.get("Referer")
+    referer = referer[7:21]
+    print(referer)
+    response = make_response(send_from_directory("static", "embed.js"))
+    response.set_cookie("GitStatUsr", Storage_Json.get_user_id_from_url(referer))
+    return response
 
 @app.route("/profile/<string:user_id>")
 def profile(user_id):
@@ -95,7 +101,15 @@ def profile(user_id):
     user_info = Storage_Json.get_stored_user(user_id).to_dict()
     return render_template("landing.html", user=user_info)
 
-
+@app.route("/register_url/<string:user_id>", methods=["POST"])
+def register_url(user_id):
+    """
+    register a new site for a user
+    """
+    url = request.form.get("urlinput")
+    Storage_Json.new_url(user_id, url)
+    Storage_Json.save_userURLs()
+    return redirect(f"/profile/{user_id}")
 
 # Functions
 ##########################################################################

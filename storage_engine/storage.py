@@ -19,8 +19,10 @@ class FileStorage:
 
     __file_repo = "repo.json"
     __file_user = "user.json"
+    __file_userURL = "URLs.json"
     __users = {}
     __repos = {}
+    __userUrl = {}
 
     def all(self, cls=None):
         """returns a dictionary containing every object"""
@@ -42,6 +44,12 @@ class FileStorage:
         if not (self.__repos.get(user_id)):
             self.__repos[user_id] = []
         self.__repos[user_id].append(repo)
+
+    def new_url(self, user_id, url):
+        """
+        register new url
+        """
+        self.__userUrl[url] = user_id
 
     def save_user(self):
         """
@@ -67,6 +75,13 @@ class FileStorage:
         with open(self.__file_repo, "w") as json_file:
             json.dump(temp, json_file)
 
+    def save_userURLs(self):
+        """
+        update the JSON file to reflect any change in the url mappings
+        """
+        with open(self.__file_userURL, "w") as json_file:
+            json.dump(self.__userUrl, json_file)
+
     def reload(self):
         """
         update users and repos dict to restore previously created pbjects
@@ -86,6 +101,11 @@ class FileStorage:
                 for repo in repos:
                     temp_repos.append(dummy_classes["Repo"](**repo))
                 self.__repos[int(id)] = temp_repos
+        except:
+            pass
+        try:
+            with open(self.__file_userURL, "r") as url_file:
+                self.__userUrl = json.load(url_file)
         except:
             pass
 
@@ -109,3 +129,9 @@ class FileStorage:
         """ Get information on an instance of a repo
         """
         return self.__repos.get(int(id))
+
+    def get_user_id_from_url(self, url):
+        """
+        get corresponding user id from url mapping
+        """
+        return self.__userUrl.get(url)
