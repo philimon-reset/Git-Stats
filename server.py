@@ -132,9 +132,13 @@ def get_embed():
 
 
 def update_user(user_id):
+<<<<<<< HEAD
     """
     update user info is the user is already in the database
     """
+=======
+    """ update user info if the user is already in the database"""
+>>>>>>> d2ee8dfb8863dc17db0ce14e0e5a98b83c002240
     user = Storage_Json.get_stored_user(user_id)
     update = get_user(user.access_token, user.user_etag)
     if update:
@@ -145,9 +149,13 @@ def update_user(user_id):
 
 
 def update_user_repos(user_id):
+<<<<<<< HEAD
     """
     update the users repo if the repo is already in the database
     """
+=======
+    """ update the users repo if the repo is already in the database"""
+>>>>>>> d2ee8dfb8863dc17db0ce14e0e5a98b83c002240
     user = Storage_Json.get_stored_user(user_id)
     user_repos = Storage_Json.get_stored_user_repos(user_id)
     update = get_user_repos(user.access_token, user.id, etag=user.repo_etag)
