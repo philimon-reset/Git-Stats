@@ -53,14 +53,15 @@ function render_git_stats() {
 	let my_frame = document.createElement("iframe");
 	my_frame.src = 'http://127.0.0.1:5000/gitstat/'+ getCookie("GitStatUsr")
 	my_frame.id = "git-stats-embeded";
+	my_frame.style = "border-style: none;width: 100%; height: 25rem;";
 	let div = document.getElementById("git_stats");
 	div.appendChild(my_frame);
 
 
-	let my_frame_style = document.createElement("style");
-	let css = "iframe {border:none; width: 100%; height:100%; overflow:hidden;}";
-	my_frame_style.appendChild(document.createTextNode(css));
+	// let my_frame_style = document.createElement("style");
+	// let css = "iframe {border: 1px ; width: 100%; height:100%; overflow:hidden;}";
+	// my_frame_style.appendChild(document.createTextNode(css));
 
-	document.head.append(my_frame_style);
+	// document.head.append(my_frame_style);
 }
 document.load = render_git_stats();
