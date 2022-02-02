@@ -1,5 +1,7 @@
 """ Application server for the git stats project"""
 
+from uuid import uuid4
+from urllib.parse import urlparse
 from flask import Flask, render_template, request, send_from_directory, redirect, make_response
 from requests import post
 from flask_cors import CORS
@@ -9,26 +11,32 @@ from wrapper.repo_wrapper import get_user_repos
 from storage_engine import Storage_Json
 from models import UserModel, RepoModel
 
+# GITHUB Auth
+##########################################################################
+
 CLIENT_ID = getenv('GH_BASIC_CLIENT_ID')
 CLIENT_SECRET = getenv('GH_BASIC_SECRET_ID')
 
+# Routes
+##########################################################################
 app = Flask(__name__)
 CORS(app)
 
-# Routes
-##########################################################################
-
 @app.route('/')
 def index():
-    """ begining route where the project begins
+    """
+    Index page
     """
     return render_template("index.html", client_id=CLIENT_ID)
 
 
 @app.route("/callback")
 def callback():
-    """ callback route sent after github authorization is completed"""
+    """
+    callback route sent after github authorization is completed
+    """
     session_code = request.args.get("code")
+
     data = {
         "client_id": CLIENT_ID,
         "client_secret": CLIENT_SECRET,
@@ -63,35 +71,8 @@ def callback():
 
         new_user.save_repos(repo_objs)
 
-    # return "success"
-    # return render_template("landing.html", user=user_info)
     return redirect(f"/profile/{user_id}")
 
-
-@app.route("/gitstat/<string:user_id>")
-def get_template(user_id):
-    """ build and return the template containing the account's information"""
-    update_user(user_id)
-    update_user_repos(user_id)
-    user = Storage_Json.get_stored_user(user_id).to_dict()
-    user_repos = [repo.to_dict()
-                  for repo in Storage_Json.get_stored_user_repos(user_id)]
-    return render_template(
-        'user_template.html',
-        user_info=user,
-        user_repo_info=user_repos)
-
-
-## TODO proper referer identification
-@app.route("/getembed", methods=["GET"])
-def get_embed():
-    """get embed script"""
-    referer = request.headers.get("Referer")
-    referer = referer[7:21]
-    print(referer)
-    response = make_response(send_from_directory("static", "embed.js"))
-    response.set_cookie("GitStatUsr", Storage_Json.get_user_id_from_url(referer))
-    return response
 
 @app.route("/profile/<string:user_id>")
 def profile(user_id):
@@ -101,21 +82,58 @@ def profile(user_id):
     user_info = Storage_Json.get_stored_user(user_id).to_dict()
     return render_template("landing.html", user=user_info)
 
+
 @app.route("/register_url/<string:user_id>", methods=["POST"])
 def register_url(user_id):
     """
     register a new site for a user
     """
     url = request.form.get("urlinput")
+    if getenv('GITSTATENV') != 'T':
+        url = urlparse(url)[1];
     Storage_Json.new_url(user_id, url)
     Storage_Json.save_userURLs()
     return redirect(f"/profile/{user_id}")
 
+
+@app.route("/gitstat/<string:user_id>")
+def get_template(user_id):
+    """
+    build and return the template containing the account's information
+    """
+    update_user(user_id)
+    update_user_repos(user_id)
+    user = Storage_Json.get_stored_user(user_id).to_dict()
+    user_repos = [repo.to_dict()
+                  for repo in Storage_Json.get_stored_user_repos(user_id)]
+    return render_template(
+        'user_template.html',
+        user_info=user,
+        user_repo_info=user_repos, cache_id=uuid4())
+
+
+@app.route("/getembed", methods=["GET"])
+def get_embed():
+    """
+    get embed script
+    """
+    referer = request.headers.get("Referer")
+    referer = urlparse(referer)[1];
+    user_id = Storage_Json.get_user_id_from_url(referer)
+    if (user_id):
+        response = make_response(send_from_directory("static", "embed.js"))
+        response.set_cookie("GitStatUsr", user_id)
+        return response
+    
+
 # Functions
 ##########################################################################
 
+
 def update_user(user_id):
-    """ update user info is the user is already in the database"""
+    """
+    update user info is the user is already in the database
+    """
     user = Storage_Json.get_stored_user(user_id)
     update = get_user(user.access_token, user.user_etag)
     if update:
@@ -126,7 +144,9 @@ def update_user(user_id):
 
 
 def update_user_repos(user_id):
-    """ ubdate the users repo if the repo is already in the database"""
+    """
+    update the users repo if the repo is already in the database
+    """
     user = Storage_Json.get_stored_user(user_id)
     user_repos = Storage_Json.get_stored_user_repos(user_id)
     update = get_user_repos(user.access_token, user.id, etag=user.repo_etag)
@@ -141,7 +161,10 @@ def update_user_repos(user_id):
         Storage_Json.save_repos()
 
 
+# Run flask
 ##########################################################################
 if __name__ == "__main__":
-    """ run the flask instance"""
+    """
+    run the flask instance
+    """
     app.run()

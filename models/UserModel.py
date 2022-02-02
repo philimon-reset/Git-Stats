@@ -1,6 +1,8 @@
 import storage_engine
 
 """ User object """
+
+
 class User():
     def __init__(self, *args, **kwargs):
         """ Initialize the user object
@@ -44,7 +46,6 @@ class User():
             storage_engine.Storage_Json.new_repo(x, self.id)
         storage_engine.Storage_Json.save_repos()
 
-    
     def to_dict(self):
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()

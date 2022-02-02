@@ -7,7 +7,7 @@ def get_user(token, etag=None, headers={}):
         returns None if user information hasn't changed based on the etag
         returns a dict if user information has been updated
     """
-    token = "token "+ token
+    token = "token " + token
     headers["Authorization"] = token
     headers["If-None-Match"] = etag
 

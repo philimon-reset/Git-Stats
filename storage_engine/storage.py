@@ -10,6 +10,7 @@ import models.RepoModel as RepoModel
 
 dummy_classes = {"User": UserModel.User, "Repo": RepoModel.Repo}
 
+
 class FileStorage:
     """
     serializes and deserializes instances to and from JSON file
@@ -26,7 +27,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """returns a dictionary containing every object"""
-        if (cls == None):
+        if (cls is None):
             return {"users": self.__users, "repos": self.__repos}
         if (cls == dummy_classes["User"]):
             return self.__users
@@ -91,7 +92,7 @@ class FileStorage:
                 user_T = json.load(user_file)
             for id, user_obj in user_T.items():
                 self.__users[int(id)] = dummy_classes["User"](**user_obj)
-        except:
+        except BaseException:
             pass
         try:
             with open(self.__file_repo, "r") as repo_file:
@@ -101,12 +102,12 @@ class FileStorage:
                 for repo in repos:
                     temp_repos.append(dummy_classes["Repo"](**repo))
                 self.__repos[int(id)] = temp_repos
-        except:
+        except BaseException:
             pass
         try:
             with open(self.__file_userURL, "r") as url_file:
                 self.__userUrl = json.load(url_file)
-        except:
+        except BaseException:
             pass
 
     def delete_repo(self, repo, user):

@@ -7,7 +7,7 @@ def get_user_repos(token, user_id, headers={}, etag=None):
         returns None if user repository information hasn't changed based on the etag
         returns a list of dict if user repository information has been updated
     """
-    token = "token "+ token
+    token = "token " + token
     headers["Authorization"] = token
     headers["If-None-Match"] = etag
     params = {
@@ -16,7 +16,10 @@ def get_user_repos(token, user_id, headers={}, etag=None):
         "visibility": "public"
     }
     repos_info = {"etag": etag, "repos": []}
-    result = get("https://api.github.com/user/repos", headers=headers, params=params)
+    result = get(
+        "https://api.github.com/user/repos",
+        headers=headers,
+        params=params)
     if result.status_code == 304:
         return repos_info
     else:

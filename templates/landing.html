@@ -32,10 +32,6 @@
           <pre>
 &lt;div id="git_stats"&gt;&lt;/div&gt;
 &lt;script&gt;
-        window.git_stats_config = {
-                usr_id: YOUR_USER_ID
-        };
-
         (function() {
                 let script = document.createElement("script");
                 script.src = "http://127.0.0.1:5000/getembed";
@@ -59,7 +55,7 @@
           to check it out !
         </p>
         <form action="/register_url/{{ user.id }}" method="post">
-            <label for="urlinput">New website:</label>
+            <label for="urlinput" class="text-white">New website:  </label>
             <input type="text" id="urlinput" name="urlinput">
             <input type="submit" value="Add">
         </form>
